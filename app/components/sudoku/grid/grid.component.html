@@ -1,0 +1,29 @@
+<div class="grid-container">
+    <div class="grid">
+    <ng-container *ngFor="let row of sudoku; index as rowIndex"> 
+        <div class="row">
+        <div class="cell"
+            *ngFor="let field of row; index as colIndex"
+            [class.top]="colIndex % 3 === 0"
+            [class.bottom]="colIndex % 3 === 2"
+            [class.left]="rowIndex % 3 === 0"
+            [class.right]="rowIndex % 3 === 2"
+            [class.readonly]="field.readonly"
+            [class.highlight-row]="rowIndex === currentRow"
+            [class.highlight-col]="colIndex === currentCol"
+            [class.highlight-same]="activeField?.value && activeField?.value === field?.value"
+            [class.note-mode-on]="field === activeField && noteMode"
+            [class.note-mode-off]="field === activeField && !noteMode"
+            (click)="onFieldClick(field)">
+            <div class="value">{{ field.value }}</div>
+            <div class="notes-grid" *ngIf="!field.value && field.notes?.length! > 0">
+            <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
+                {{ field.notes?.includes(i) ? i : '' }}
+            </div>
+            </div>
+
+        </div>
+        </div>
+    </ng-container>
+    </div>
+</div>

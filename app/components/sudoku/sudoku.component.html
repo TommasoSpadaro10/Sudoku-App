@@ -1,0 +1,53 @@
+<div class="button-container">
+        <button id="create-puzzle-button"
+          class="btn btn-create"
+          [ngClass]="{ 'active': currentMode === 'create' }"
+          (click)="onCreateClick()">
+          Crea un Sudoku
+        </button>
+
+        <button id="solve-puzzle-button"
+          class="btn btn-solve"
+          [ngClass]="{ 'active': currentMode === 'play' }"
+          (click)="onPlayClick()">
+          Gioca a Sudoku
+        </button>
+</div>
+
+<su-grid [sudoku]="sudoku" [(activeField)]="activeField" [noteMode]="noteMode" ></su-grid>
+
+<div class="controls">
+  <button *ngFor="let button of numberButtons"
+          [disabled]="button.disabled"
+          #numButton 
+          (click)="insertNumber(button.number); numButton.blur()"> 
+    {{ button.number }}
+  </button>
+</div>
+
+<div class="progress-container">
+  <div class="progress-bar" [style.width.%]="progress"></div>
+</div>
+
+<div class="dynamic-section">
+    <button *ngIf="currentMode === 'play' && progress !== 100" id="hint-button" class="btn btn-hint" (click)="hint()">
+        Suggerimento
+    </button>
+
+    <button *ngIf="currentMode === 'play' && progress !== 100" id="note-button" class="btn btn-note" (click)="note()">
+        Note
+    </button>
+
+    <p *ngIf="currentMode === 'play' && progress === 100"  style="color:gold; font-size: 30px;">
+        You win!
+    </p>
+
+    <p *ngIf="currentMode !== 'play'" class="message" [ngClass]="{ 'valid': isSolvable, 'invalid': !isSolvable }">
+        {{ isSolvable ? 'Il sudoku ha almeno una soluzione!' : 'Nessuna soluzione possibile.' }}
+    </p>
+
+    <button *ngIf="currentMode !== 'play'" id="solve-button" class="btn btn-solveSudoku" (click)="solveSudoku()">
+        Risolvi
+    </button>
+</div>
+
